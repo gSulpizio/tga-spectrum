@@ -47,3 +47,17 @@ test('simulated double step', () => {
   expect(Math.abs(peaks[0].x - 377)).toBeLessThan(5);
   expect(Math.abs(peaks[0].width - 10)).toBeLessThan(10);
 });
+test('findPeaks, experimental data', () => {
+  const content = readFileSync(join(__dirname, 'data/data.json'), 'utf8');
+  let parsedContent = JSON.parse(content);
+  let result = findPeaks(parsedContent.x, parsedContent.y);
+
+  expect(result).toHaveLength(4);
+
+  let expectedX = [75, 190, 473, 545];
+  let expectedWidth = [65, 150, 60, 70];
+  for (let i = 0; i < result.length; i++) {
+    expect(Math.abs(result[i].x - expectedX[i])).toBeLessThan(10);
+    expect(Math.abs(result[i].width - expectedWidth[i])).toBeLessThan(10);
+  }
+});
